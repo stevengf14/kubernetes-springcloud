@@ -3,10 +3,9 @@ package ec.com.learning.sprongcloud.msvc.users.controllers;
 import ec.com.learning.sprongcloud.msvc.users.models.entity.User;
 import ec.com.learning.sprongcloud.msvc.users.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import java.util.List;
@@ -27,5 +26,30 @@ public class UserController {
     public ResponseEntity<?> findById(@PathVariable Long id) {
         Optional<User> user = service.findById(id);
         return user.isPresent() ? ResponseEntity.ok(user.get()) : ResponseEntity.noContent().build();
+    }
+
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public User save(@RequestBody User user) {
+//        return service.save(user);
+//    }
+
+    @PostMapping
+    public ResponseEntity<?> save(@RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@RequestBody User user, @PathVariable Long id) {
+        Optional<User> optionalUser = service.findById(id);
+        if (optionalUser.isPresent()) {
+            User dbUser = optionalUser.get();
+            dbUser.setName(user.getName());
+            dbUser.setEmail(user.getEmail());
+            dbUser.setPassword(user.getPassword());
+            return ResponseEntity.status(HttpStatus.CREATED).body(service.save(dbUser));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
