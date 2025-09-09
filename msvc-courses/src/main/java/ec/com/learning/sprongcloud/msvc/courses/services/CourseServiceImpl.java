@@ -3,11 +3,13 @@ package ec.com.learning.sprongcloud.msvc.courses.services;
 import ec.com.learning.sprongcloud.msvc.courses.models.entity.Course;
 import ec.com.learning.sprongcloud.msvc.courses.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
