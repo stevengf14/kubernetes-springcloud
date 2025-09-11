@@ -2,12 +2,16 @@ package ec.com.learning.sprongcloud.msvc.courses.controllers;
 
 import ec.com.learning.sprongcloud.msvc.courses.models.entity.Course;
 import ec.com.learning.sprongcloud.msvc.courses.services.CourseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -31,13 +35,19 @@ public class CourseController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> save(@RequestBody Course course) {
+    public ResponseEntity<?> save(@Valid @RequestBody Course course, BindingResult result) {
+        if (result.hasErrors()) {
+            return validate(result);
+        }
         Course courseDb = service.save(course);
         return ResponseEntity.status(HttpStatus.CREATED).body(courseDb);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody Course course, @PathVariable Long id) {
+    public ResponseEntity<?> update(@Valid @RequestBody Course course, BindingResult result, @PathVariable Long id) {
+        if (result.hasErrors()) {
+            return validate(result);
+        }
         Optional<Course> opt = service.getById(id);
         if (opt.isPresent()) {
             Course courseDb = opt.get();
@@ -55,6 +65,14 @@ public class CourseController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    private static ResponseEntity<Map<String, String>> validate(BindingResult result) {
+        Map<String, String> errors = new HashMap<>();
+        result.getFieldErrors().forEach(error -> {
+            errors.put(error.getField(), "El campo " + error.getField() + " " + error.getDefaultMessage());
+        });
+        return ResponseEntity.badRequest().body(errors);
     }
 
 }

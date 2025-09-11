@@ -1,6 +1,8 @@
 package ec.com.learning.sprongcloud.msvc.users.models.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
 @Entity
@@ -12,11 +14,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty//(message = "Name cannot be empty")
     private String name;
 
+    @Email
+    @NotEmpty
     @Column(unique = true)
     private String email;
 
+    @NotEmpty
     private String password;
 
 }
