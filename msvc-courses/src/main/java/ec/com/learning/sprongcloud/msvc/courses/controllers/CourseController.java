@@ -22,7 +22,7 @@ public class CourseController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(Long id) {
+    public ResponseEntity<?> getById(@PathVariable Long id) {
         Optional<Course> opt = service.getById(id);
         if (opt.isPresent()) {
             return ResponseEntity.ok(opt.get());
