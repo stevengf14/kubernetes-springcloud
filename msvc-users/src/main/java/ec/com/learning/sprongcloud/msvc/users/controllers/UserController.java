@@ -40,6 +40,10 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> save(@Valid @RequestBody User user, BindingResult result) {
+        if (service.findByEmail(user.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", "Ya existe un usuario con ese correo"));
+        }
+
         if (result.hasErrors()) {
             return validate(result);
         }
@@ -54,6 +58,10 @@ public class UserController {
         Optional<User> optionalUser = service.findById(id);
         if (optionalUser.isPresent()) {
             User dbUser = optionalUser.get();
+            if (!user.getEmail().equalsIgnoreCase(dbUser.getEmail()) && service.findByEmail(user.getEmail()).isPresent()) {
+                return ResponseEntity.badRequest().body(Map.of("mensaje", "Ya existe un usuario con ese correo"));
+            }
+
             dbUser.setName(user.getName());
             dbUser.setEmail(user.getEmail());
             dbUser.setPassword(user.getPassword());
