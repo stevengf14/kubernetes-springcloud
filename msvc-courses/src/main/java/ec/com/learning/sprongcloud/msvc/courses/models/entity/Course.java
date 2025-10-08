@@ -1,5 +1,6 @@
 package ec.com.learning.sprongcloud.msvc.courses.models.entity;
 
+import ec.com.learning.sprongcloud.msvc.courses.models.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,10 +22,15 @@ public class Course {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "course_id")
     private List<CourseUser> courseUsers;
+
+    @Transient
+    private List<User> users;
 
     public Course() {
         courseUsers = new ArrayList<>();
+        users = new ArrayList<>();
     }
 
     public void addCourseUser(CourseUser courseUser) {
