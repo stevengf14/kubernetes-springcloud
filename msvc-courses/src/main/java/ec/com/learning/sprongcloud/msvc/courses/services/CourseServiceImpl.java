@@ -1,5 +1,6 @@
 package ec.com.learning.sprongcloud.msvc.courses.services;
 
+import ec.com.learning.sprongcloud.msvc.courses.models.User;
 import ec.com.learning.sprongcloud.msvc.courses.models.entity.Course;
 import ec.com.learning.sprongcloud.msvc.courses.repositories.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,20 @@ public class CourseServiceImpl implements CourseService {
     @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<User> assignUser(User user, Long courseId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> createUser(User user, Long courseId) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<User> removeUser(User user, Long courseId) {
+        return Optional.empty();
     }
 }
