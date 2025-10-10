@@ -1,5 +1,6 @@
 package ec.com.learning.sprongcloud.msvc.courses.services;
 
+import ec.com.learning.sprongcloud.msvc.courses.clients.UserClientRest;
 import ec.com.learning.sprongcloud.msvc.courses.models.User;
 import ec.com.learning.sprongcloud.msvc.courses.models.entity.Course;
 import ec.com.learning.sprongcloud.msvc.courses.repositories.CourseRepository;
@@ -15,6 +16,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository repository;
+
+    @Autowired
+    private UserClientRest client;
 
     @Override
     @Transactional(readOnly = true)
